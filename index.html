@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <script src="http://js.api.here.com/v3/3.0/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+  <script src="http://js.api.here.com/v3/3.0/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+  <title>3Lugares</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+  <h1>3Lugares</h1>
+  <button id="plaza">Plaza de Armas</button>
+  <button id="santa_catalina">Santa Catalina</button>
+  <button id="munanqui">Munanqui</button>
+  <h3 id="title"></h3>
+  <p id="descripcion"></p>
+  <div style="width: 640px; height: 480px" id="mapContainer"></div>
+</body>
+<script>
+(function($){
+  var plazaArmas = {
+    titulo: 'Plaza de Armas',
+    descripcion: 'El mas importante lugar para ver',
+    location: {lat:-16.398739, lng:-71.536903}
+  };
+  var munanqui = {
+    titulo: 'Munanqui',
+    descripcion: 'Peruvian Tea. Es una Experiencia!',
+    location: {lat: -16.396307, lng: -71.534284}
+  };
+  var santaCatalina = {
+    titulo: 'Santa Catalina',
+    descripcion: 'Increíble. Un poco costoso pero vale la pena',
+    location: {lat: -16.395118, lng: -71.536798}
+  };
+  // Initialize the platform object: Necesita un app_id y app_code. Crea una cuenta en https://developer.here.com/
+  var platform = new H.service.Platform({
+  'app_id': 'PEGAR_TU_APP_ID',
+  'app_code': 'PEGAR_TU_APP_CODE'
+  });
+  // Obtain the default map types from the platform object
+  var maptypes = platform.createDefaultLayers();
+  // Instantiate (and display) a map object:
+  var map = new H.Map(
+  document.getElementById('mapContainer'),
+  maptypes.normal.map,
+  {
+    zoom: 15,
+    center: { lng: -71.535, lat: -16.39889 }
+  });
+  $('#plaza').click(function(){ mostrarLugar(map,plazaArmas) })
+  $('#santa_catalina').click(function(){ mostrarLugar(map,santaCatalina) })
+  $('#munanqui').click(function(){ mostrarLugar(map,munanqui) })
+  var mapObjects = [];
+  function mostrarLugar(map, lugar){
+    $('#title').html(lugar.titulo);
+    $('#descripcion').html(lugar.descripcion);
+    var marker = new H.map.Marker(lugar.location);
+    map.removeObjects(mapObjects);
+    mapObjects = [marker];
+    map.addObjects(mapObjects);
+  }
+})(jQuery)
+</script>
+</html>
